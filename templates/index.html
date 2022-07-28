@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <h1>Search</h1>
+    <input autocomplete="off" autofocus name="q" placeholder="Query Title, for instance, 5G OR ^[45]g.*0$" type="text">
+
+    <input type="radio" id="dataset2" name="dataset" value="dataset2" checked="checked">
+    <label for="dataset2">Cisco Live 2022 Las Vegas Session Catalog</label>
+
+    <ul></ul>
+
+    <div style="overflow:auto; height:auto; width:auto; border:none solid; margin:auto;">
+        <div class="container"></div>
+    </div>
+
+    <div style="overflow:auto; height:auto; width:auto; border:none solid; margin:auto;">
+        <table class="pure-table">
+            <thead class="th"></thead>
+            <tbody class="tb"></tbody>
+        </table>
+    </div>
+
+    <script src="/jquery-3.3.1.min.js"></script>
+    <script>
+        let input = document.querySelector('input');
+        input.onkeyup = function() {
+            //#0
+            //#logic option 1 - if input.value empty then NOT do query
+            //#logic option 2 - comment this logic block out then DO query all with empty q (q='')
+            if (input.value == '') {
+                document.querySelector('.container').innerHTML = '';
+                //return False;
+            }
+            var radio = document.querySelector('input[name="dataset"]:checked');
+            console.log(radio.value);
+            $.get('/search?q=' + input.value + '&dataset=' + radio.value, function(data) {
+                document.querySelector('.container').innerHTML = data
+            });
+        };
+        
+    </script>
+    
+{% endblock %}
